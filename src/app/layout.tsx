@@ -52,8 +52,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable}`}>
+    <html
+      lang="en"
+      className={`${inter.variable} ${spaceGrotesk.variable}`}
+      suppressHydrationWarning
+    >
       <body className="min-h-screen antialiased">
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;var d=document,r=d.documentElement;r.classList.add('js-anim');setTimeout(function(){d.querySelectorAll('.reveal').forEach(function(e){e.classList.add('in-view')})},3000)}catch(e){}})();`,
+          }}
+        />
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-brand-600 focus:px-4 focus:py-2 focus:text-white"

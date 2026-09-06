@@ -27,11 +27,11 @@ export default function HomePage() {
         <Container className="relative">
           <div className="grid items-center gap-14 lg:grid-cols-[1.05fr_1fr]">
             <div className="reveal in-view">
-              <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-semibold text-white/80 backdrop-blur">
-                <span className="h-1.5 w-1.5 rounded-full bg-accent-400" />
-                AI captions · AI speech translation · Remote interpretation
+              <span className="inline-flex max-w-full items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-[0.7rem] font-semibold leading-tight text-white/80 backdrop-blur sm:text-xs">
+                <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-accent-400" />
+                <span className="min-w-0">AI captions · AI speech translation · Remote interpretation</span>
               </span>
-              <h1 className="mt-6 text-balance font-display text-4xl font-bold leading-[1.05] sm:text-5xl md:text-6xl">
+              <h1 className="mt-6 font-display text-[2rem] font-bold leading-[1.08] sm:text-5xl sm:leading-[1.05] md:text-6xl">
                 Multilingual live streaming{" "}
                 <span className="text-gradient">made effortless</span>
               </h1>
@@ -49,7 +49,7 @@ export default function HomePage() {
                   See live demo
                 </Button>
               </div>
-              <dl className="mt-12 grid max-w-md grid-cols-3 gap-6">
+              <dl className="mt-12 grid max-w-[20rem] grid-cols-3 gap-4 sm:max-w-md sm:gap-6">
                 {[
                   ["99+%", "caption accuracy"],
                   ["50+", "languages"],

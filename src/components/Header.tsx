@@ -162,10 +162,7 @@ function NavItem({
             wide ? "w-[640px]" : "w-[320px]"
           }`}
         >
-          <div
-            className="reveal in-view overflow-hidden rounded-2xl border border-ink-100 bg-white p-3 shadow-[0_30px_80px_-30px_rgba(11,11,18,0.35)]"
-            style={{ animationDuration: "0.2s" }}
-          >
+          <div className="overflow-hidden rounded-2xl border border-ink-100 bg-white p-3 shadow-[0_30px_80px_-30px_rgba(11,11,18,0.35)] [animation:fade-up_0.18s_ease-out_both]">
             <div className={`grid gap-1 ${wide ? "grid-cols-2" : "grid-cols-1"}`}>
               {group.columns.map((col, i) => (
                 <div key={i} className="p-1">
