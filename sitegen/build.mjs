@@ -13,19 +13,40 @@ import { clientLogos } from "./content/logos.ts";
 import { solutionCards, accuracySteps, trustReasons, platformBullets } from "./content/home.ts";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const OUT = join(ROOT, "dist");
+const OUT = ROOT; // emit straight into the repo root (index.html at the top level)
 const SITE_URL = "https://sabiocast.com";
+
+// Top-level entries this generator owns and is allowed to wipe on rebuild.
+// Everything else at the root (sitegen/, public/, package.json, .git, …) is left alone.
+const MANAGED_FILES = ["index.html", "404.html", "sitemap.xml", "robots.txt", "icon.svg"];
+const MANAGED_DIRS = new Set(["js", "images"]);
 
 /* ---------------- helpers ---------------- */
 const e = (s = "") =>
   String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const raw = (s) => s; // readability marker
 
+/** internal route -> flat filename, e.g. "/solutions/x" -> "solutions-x.html" */
+function flatName(route) {
+  if (route === "/") return "index.html";
+  return route.replace(/^\//, "").replace(/\/+$/, "").replace(/\//g, "-") + ".html";
+}
+
+/** rewrite all root-absolute links to flat, relative paths (single-folder site) */
+function flattenLinks(html) {
+  return html.replace(/(href|src)="\/([^"]*)"/g, (_m, attr, path) => {
+    // assets keep their folder, just drop the leading slash
+    if (/^(images\/|js\/|icon\.svg$)/.test(path)) return `${attr}="${path}"`;
+    const m = path.match(/^([^?#]*)([?#].*)?$/);
+    const rest = m[2] || "";
+    const p = m[1].replace(/\/+$/, "");
+    if (p === "") return `${attr}="index.html${rest}"`;
+    return `${attr}="${p.replace(/\//g, "-")}.html${rest}"`;
+  });
+}
+
 function write(route, html) {
-  const rel = route === "/" ? "index.html" : join(route.replace(/^\//, ""), "index.html");
-  const file = join(OUT, rel);
-  mkdirSync(dirname(file), { recursive: true });
-  writeFileSync(file, html);
+  writeFileSync(join(OUT, flatName(route)), flattenLinks(html));
 }
 
 /* ---------------- icons ---------------- */
@@ -115,7 +136,7 @@ ${e(g.label)}<svg class="msub-caret h-4 w-4 transition-transform" viewBox="0 0 1
     })
     .join("");
 
-  return `<header data-header data-scrolled="false" class="sticky top-0 z-50 border-b border-transparent transition-all duration-300 [&[data-scrolled=true]]:border-ink-100 [&[data-scrolled=true]]:bg-paper/90 [&[data-scrolled=true]]:backdrop-blur-lg">
+  return `<header data-header data-scrolled="false" class="sticky top-0 z-50 border-b border-transparent transition-[background,box-shadow,border-color] duration-300">
 <div class="container-x flex h-16 items-center justify-between gap-6 md:h-[72px]">
 ${logo()}
 <nav class="hidden items-center gap-1 lg:flex">${desktop}</nav>
@@ -200,7 +221,10 @@ img,svg,video,canvas{max-width:100%}
 .reveal{opacity:1}
 .js-anim .reveal{opacity:0;transform:translateY(18px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
 .js-anim .reveal.in-view{opacity:1;transform:none}
-[data-header][data-scrolled="true"]{border-bottom-color:var(--ink-100);background:rgba(251,250,248,.9);backdrop-filter:blur(12px)}
+[data-header]{background:#fff}
+[data-header][data-scrolled="true"]{border-bottom-color:var(--ink-100);background:#fff;box-shadow:0 1px 3px rgba(11,11,18,.07),0 14px 34px -16px rgba(11,11,18,.14)}
+[data-header] .nav-trigger,[data-header] nav>a{color:#454556}
+[data-header] .nav-trigger:hover,[data-header] nav>a:hover{color:#4b2fc9}
 .nav-panel{opacity:0;visibility:hidden;transform:translateY(6px);transition:opacity .18s,transform .18s,visibility .18s}
 .nav-group[data-open="true"] .nav-panel{opacity:1;visibility:visible;transform:translateY(0)}
 .nav-group[data-open="true"] .nav-caret{transform:rotate(180deg)}
@@ -227,7 +251,7 @@ function layout({ title, description, body, canonical }) {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${e(full)}</title>
 <meta name="description" content="${e(description)}">
-<link rel="canonical" href="${SITE_URL}${canonical || "/"}">
+<link rel="canonical" href="${SITE_URL}/${canonical && canonical !== "/" ? flatName(canonical) : ""}">
 <meta property="og:title" content="${e(full)}">
 <meta property="og:description" content="${e(description)}">
 <meta property="og:type" content="website">
@@ -438,9 +462,6 @@ function splitFeature({ eyebrow: eb, title, body, bullets, image, reverse = fals
 }
 
 /* ---------------- PAGES ---------------- */
-rmSync(OUT, { recursive: true, force: true });
-mkdirSync(OUT, { recursive: true });
-
 const pages = [];
 const P = (route, title, description, body) => pages.push({ route, title, description, body });
 
@@ -1004,12 +1025,11 @@ ${section(`<div class="grid gap-12 lg:grid-cols-[1fr_2.4fr]">
 }
 
 /* ---- 404 ---- */
-{
-  const html = layout({
-    title: "Page not found",
-    description: "The page you were looking for could not be found.",
-    canonical: "/404",
-    body: `<section class="relative flex min-h-[70vh] items-center overflow-hidden bg-ink-950 text-white">
+const html404 = layout({
+  title: "Page not found",
+  description: "The page you were looking for could not be found.",
+  canonical: "/404",
+  body: `<section class="relative flex min-h-[70vh] items-center overflow-hidden bg-ink-950 text-white">
 <div class="bg-grid absolute inset-0 opacity-[0.12]"></div>
 <div class="absolute -left-40 top-0 h-96 w-96 rounded-full bg-brand-600/25 blur-[120px]"></div>
 <div class="container-x relative text-center">
@@ -1018,14 +1038,18 @@ ${section(`<div class="grid gap-12 lg:grid-cols-[1fr_2.4fr]">
 <p class="mx-auto mt-3 max-w-md text-white/60">The link may be broken, or the page may have moved. Let's get you back to something useful.</p>
 <div class="mt-8 flex flex-wrap justify-center gap-3">${button("/", "Back home", { size: "lg", icon: true })}${button("/contact", "Contact us", { size: "lg", variant: "light" })}</div>
 </div></section>`,
-  });
-  writeFileSync(join(OUT, "404.html"), html);
-}
+});
 
 /* ---------------- emit ---------------- */
+// clean only what we own (flat .html files + generated asset folders), then regenerate
+for (const p of pages) MANAGED_FILES.push(flatName(p.route));
+for (const f of MANAGED_FILES) rmSync(join(OUT, f), { force: true });
+for (const d of MANAGED_DIRS) rmSync(join(OUT, d), { recursive: true, force: true });
+
 for (const p of pages) {
   write(p.route, layout({ title: p.title, description: p.description, body: p.body, canonical: p.route }));
 }
+writeFileSync(join(OUT, "404.html"), flattenLinks(html404));
 
 // assets
 cpSync(join(ROOT, "public"), OUT, { recursive: true });
@@ -1045,13 +1069,12 @@ writeFileSync(
 );
 if (!cfg.token) console.warn("!  TELEGRAM_BOT_TOKEN not set — forms will show 'not configured'. Add it to .env.local");
 // sitemap + robots
-const routes = ["/404", ...pages.map((p) => p.route)].filter((r) => r !== "/404");
 writeFileSync(
   join(OUT, "sitemap.xml"),
   `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${pages
-    .map((p) => `  <url><loc>${SITE_URL}${p.route === "/" ? "/" : p.route + "/"}</loc></url>`)
+    .map((p) => `  <url><loc>${SITE_URL}/${p.route === "/" ? "" : flatName(p.route)}</loc></url>`)
     .join("\n")}\n</urlset>\n`,
 );
 writeFileSync(join(OUT, "robots.txt"), `User-agent: *\nAllow: /\nSitemap: ${SITE_URL}/sitemap.xml\n`);
 
-console.log(`Generated ${pages.length} pages + 404 into dist/`);
+console.log(`Generated ${pages.length} flat HTML pages + 404 at the project root`);

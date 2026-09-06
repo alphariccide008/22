@@ -1,10 +1,10 @@
-/* Zero-dependency static file server for previewing ./dist */
+/* Zero-dependency static file server for previewing the site (project root) */
 import { createServer } from "node:http";
 import { readFile, stat } from "node:fs/promises";
 import { join, extname } from "node:path";
 import { fileURLToPath } from "node:url";
 
-const DIST = join(fileURLToPath(new URL(".", import.meta.url)), "..", "dist");
+const ROOT = join(fileURLToPath(new URL(".", import.meta.url)), "..");
 const PORT = process.env.PORT || 4173;
 
 const TYPES = {
@@ -22,45 +22,47 @@ const TYPES = {
   ".ico": "image/x-icon",
 };
 
-async function resolve(urlPath) {
-  let p = decodeURIComponent(urlPath.split("?")[0]);
-  if (p.endsWith("/")) p += "index.html";
-  let file = join(DIST, p);
+async function tryFile(f) {
   try {
-    const s = await stat(file);
-    if (s.isDirectory()) file = join(file, "index.html");
-    return file;
-  } catch {
-    // try clean-url -> /foo => /foo/index.html
-    try {
-      const alt = join(DIST, p, "index.html");
-      await stat(alt);
-      return alt;
-    } catch {
-      return null;
-    }
-  }
+    const s = await stat(f);
+    if (s.isFile()) return f;
+  } catch {}
+  return null;
+}
+
+// only the built site is browsable; never the project internals / secrets
+const ALLOW = /^(images\/|js\/[\w.-]+\.js$|[\w-]+\.html$|icon\.svg$|sitemap\.xml$|robots\.txt$)/;
+
+async function resolve(urlPath) {
+  const clean = decodeURIComponent(urlPath.split("?")[0].split("#")[0]);
+  if (clean === "/" || clean === "") return join(ROOT, "index.html");
+  const p = clean.replace(/^\/+/, "").replace(/\/+$/, "");
+  if (p.includes("..")) return null;
+  if (!ALLOW.test(p) && !ALLOW.test(p + ".html")) return null;
+  return (
+    (await tryFile(join(ROOT, p))) ||
+    (await tryFile(join(ROOT, p + ".html"))) ||
+    (await tryFile(join(ROOT, p, "index.html"))) ||
+    null
+  );
 }
 
 createServer(async (req, res) => {
   const file = await resolve(req.url || "/");
   if (!file) {
-    try {
-      const nf = await readFile(join(DIST, "404.html"));
+    const nf = await tryFile(join(ROOT, "404.html"));
+    if (nf) {
       res.writeHead(404, { "Content-Type": TYPES[".html"] });
-      res.end(nf);
-    } catch {
+      res.end(await readFile(nf));
+    } else {
       res.writeHead(404).end("Not found");
     }
     return;
   }
   try {
-    const body = await readFile(file);
     res.writeHead(200, { "Content-Type": TYPES[extname(file)] || "application/octet-stream" });
-    res.end(body);
+    res.end(await readFile(file));
   } catch {
     res.writeHead(500).end("Server error");
   }
-}).listen(PORT, () => {
-  console.log(`SabioCast static preview → http://localhost:${PORT}`);
-});
+}).listen(PORT, () => console.log(`SabioCast preview → http://localhost:${PORT}`));

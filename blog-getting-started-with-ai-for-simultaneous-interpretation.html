@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Getting started with AI for simultaneous interpretation — SabioCast</title>
+<meta name="description" content="SabioCast lets you deliver live streams with multiple audio languages and closed captions using AI, human interpreters, or a combination of both.">
+<link rel="canonical" href="https://sabiocast.com/blog-getting-started-with-ai-for-simultaneous-interpretation.html">
+<meta property="og:title" content="Getting started with AI for simultaneous interpretation — SabioCast">
+<meta property="og:description" content="SabioCast lets you deliver live streams with multiple audio languages and closed captions using AI, human interpreters, or a combination of both.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config={theme:{extend:{
+fontFamily:{display:['"Space Grotesk"','ui-sans-serif','system-ui','sans-serif'],sans:['Inter','ui-sans-serif','system-ui','sans-serif']},
+colors:{
+brand:{50:'#eef0ff',100:'#e0e2ff',200:'#c6c9ff',300:'#a3a5fc',400:'#837df8',500:'#6a5cf0',600:'#5a3fe4',700:'#4b2fc9',800:'#3d29a2',900:'#342780',950:'#21174f'},
+accent:{50:'#fff2ed',100:'#ffe3d6',200:'#ffc4ad',300:'#ff9d78',400:'#ff7a4d',500:'#ff5a36',600:'#ed3d15',700:'#c42d0e',800:'#9c2712',900:'#7e2413'},
+ink:{50:'#f7f7f9',100:'#ededf1',200:'#d8d8e0',300:'#b6b6c4',400:'#8d8da1',500:'#6d6d83',600:'#56566a',700:'#454556',800:'#2b2b38',900:'#17171f',950:'#0b0b12'},
+paper:'#fbfaf8'
+}}}}</script>
+<style>
+:root{--brand-600:#5a3fe4;--accent-500:#ff5a36;--ink-100:#ededf1;--paper:#fbfaf8;--ink-900:#17171f}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+html,body{overflow-x:clip}
+body{margin:0;background:var(--paper);color:var(--ink-900);font-family:Inter,ui-sans-serif,system-ui,sans-serif;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+::selection{background:var(--brand-600);color:#fff}
+h1,h2,h3,h4{font-family:"Space Grotesk",ui-sans-serif,system-ui,sans-serif;letter-spacing:-0.02em;overflow-wrap:break-word}
+img,svg,video,canvas{max-width:100%}
+[hidden]{display:none!important}
+.container-x{width:100%;margin-inline:auto;max-width:80rem;padding-inline:1.25rem}
+@media(min-width:768px){.container-x{padding-inline:2rem}}
+.text-gradient{background:linear-gradient(100deg,var(--brand-600),var(--accent-500));-webkit-background-clip:text;background-clip:text;color:transparent}
+.bg-grid{background-image:linear-gradient(to right,rgba(255,255,255,.06) 1px,transparent 1px),linear-gradient(to bottom,rgba(255,255,255,.06) 1px,transparent 1px);background-size:56px 56px}
+@keyframes fade-up{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes pulse-ring{0%{transform:scale(.85);opacity:.7}100%{transform:scale(1.6);opacity:0}}
+.animate-marquee{animation:marquee 38s linear infinite}
+.animate-float{animation:float 6s ease-in-out infinite}
+.reveal{opacity:1}
+.js-anim .reveal{opacity:0;transform:translateY(18px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.js-anim .reveal.in-view{opacity:1;transform:none}
+[data-header]{background:#fff}
+[data-header][data-scrolled="true"]{border-bottom-color:var(--ink-100);background:#fff;box-shadow:0 1px 3px rgba(11,11,18,.07),0 14px 34px -16px rgba(11,11,18,.14)}
+[data-header] .nav-trigger,[data-header] nav>a{color:#454556}
+[data-header] .nav-trigger:hover,[data-header] nav>a:hover{color:#4b2fc9}
+.nav-panel{opacity:0;visibility:hidden;transform:translateY(6px);transition:opacity .18s,transform .18s,visibility .18s}
+.nav-group[data-open="true"] .nav-panel{opacity:1;visibility:visible;transform:translateY(0)}
+.nav-group[data-open="true"] .nav-caret{transform:rotate(180deg)}
+[data-msub] .msub-links{display:none}
+[data-msub][data-open="true"] .msub-links{display:block}
+[data-msub][data-open="true"] .msub-caret{transform:rotate(180deg)}
+[data-burger][data-open="true"] .b1{top:.5rem;transform:rotate(45deg)}
+[data-burger][data-open="true"] .b2{opacity:0}
+[data-burger][data-open="true"] .b3{top:.5rem;transform:rotate(-45deg)}
+.faq-item .faq-answer{display:grid;grid-template-rows:0fr;transition:grid-template-rows .3s ease,padding .3s ease,opacity .3s ease;opacity:0}
+.faq-item[data-open="true"] .faq-answer{grid-template-rows:1fr;opacity:1;padding-bottom:1.25rem}
+.faq-answer>div{overflow:hidden}
+.faq-item[data-open="true"] .faq-plus{transform:rotate(45deg);background:var(--brand-600);color:#fff;border-color:var(--brand-600)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}.js-anim .reveal{opacity:1;transform:none;transition:none}}
+</style>
+</head>
+<body class="min-h-screen antialiased">
+<a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-brand-600 focus:px-4 focus:py-2 focus:text-white">Skip to content</a>
+<header data-header data-scrolled="false" class="sticky top-0 z-50 border-b border-transparent transition-[background,box-shadow,border-color] duration-300">
+<div class="container-x flex h-16 items-center justify-between gap-6 md:h-[72px]">
+<a href="index.html" aria-label="SabioCast home" class="shrink-0"><span class="inline-flex items-center gap-2.5"><svg viewBox="0 0 48 48" class="h-9 w-9" role="img" aria-label="SabioCast" fill="none" xmlns="http://www.w3.org/2000/svg">
+<defs><linearGradient id="sc-grad" x1="4" y1="6" x2="44" y2="42" gradientUnits="userSpaceOnUse"><stop stop-color="#5a3fe4"/><stop offset="1" stop-color="#ff5a36"/></linearGradient></defs>
+<rect x="1" y="1" width="46" height="46" rx="13" fill="url(#sc-grad)"/>
+<g stroke="#fff" stroke-width="3.4" stroke-linecap="round">
+<path d="M14.5 24.5a12 12 0 0 1 12 12" opacity="0.95"/>
+<path d="M14.5 16.5a20 20 0 0 1 20 20" opacity="0.7"/>
+<path d="M14.5 8.5a28 28 0 0 1 28 28" opacity="0.45"/></g>
+<circle cx="15" cy="36" r="4.4" fill="#fff"/></svg>
+<span class="font-display text-xl font-bold tracking-tight"><span class="text-ink-900">Sabio</span><span class="text-accent-500">Cast</span></span></span></a>
+<nav class="hidden items-center gap-1 lg:flex"><div class="nav-group relative" data-open="false">
+<button type="button" class="nav-trigger flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-semibold text-ink-700 transition-colors hover:text-brand-700" aria-expanded="false">
+Solutions<svg class="nav-caret h-3.5 w-3.5 transition-transform" viewBox="0 0 16 16" fill="none"><path d="m4 6 4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+<div class="nav-panel absolute left-1/2 top-full z-50 -translate-x-1/2 pt-3 w-[640px]">
+<div class="overflow-hidden rounded-2xl border border-ink-100 bg-white p-3 shadow-[0_30px_80px_-30px_rgba(11,11,18,0.35)]">
+<div class="grid gap-1 grid-cols-2"><div class="p-1"><p class="px-3 pb-1 pt-2 text-[0.68rem] font-bold uppercase tracking-[0.16em] text-ink-400">Streaming</p><a href="solutions-live-vod-streaming.html" class="group block rounded-xl px-3 py-2.5 transition-colors hover:bg-brand-50">
+<span class="block text-sm font-semibold text-ink-900 group-hover:text-brand-700">Live &amp; VoD Streaming</span>
+<span class="mt-0.5 block text-xs leading-snug text-ink-500">All-in-one platform for live and on-demand video.</span></a><a href="solutions-multilingual-simulive-streaming.html" class="group block rounded-xl px-3 py-2.5 transition-colors hover:bg-brand-50">
+<span class="block text-sm font-semibold text-ink-900 group-hover:text-brand-700">Multilingual Simulive Streaming</span>
+<span class="mt-0.5 block text-xs leading-snug text-ink-500">Pre-recorded video streamed as a real live event.</span></a></div><div class="p-1"><p class="px-3 pb-1 pt-2 text-[0.68rem] font-bold uppercase tracking-[0.16em] text-ink-400">Languages</p><a href="solutions-ai-multilingual-subtitles.html" class="group block rounded-xl px-3 py-2.5 transition-colors hover:bg-brand-50">
+<span class="block text-sm font-semibold text-ink-900 group-hover:text-brand-700">Live AI Multilingual Subtitles</span>
+<span class="mt-0.5 block text-xs leading-snug text-ink-500">99+% accurate AI closed captions, auto-translated.</span></a><a href="solutions-ai-speech-translations.html" class="group block rounded-xl px-3 py-2.5 transition-colors hover:bg-brand-50">
+<span class="block text-sm font-semibold text-ink-900 group-hover:text-brand-700">Live AI Speech Translations</span>
+<span class="mt-0.5 block text-xs leading-snug text-ink-500">Natural AI voices in any number of languages.</span></a><a href="solutions-remote-simultaneous-interpretation.html" class="group block rounded-xl px-3 py-2.5 transition-colors hover:bg-brand-50">
+<span class="block text-sm font-semibold text-ink-900 group-hover:text-brand-700">Remote Simultaneous Interpretation</span>
+<span class="mt-0.5 block text-xs leading-snug text-ink-500">Award-winning Translate@Home for interpreters anywhere.</span></a><a href="solutions-live-human-subtitling.html" class="group block rounded-xl px-3 py-2.5 transition-colors hover:bg-brand-50">
+<span class="block text-sm font-semibold text-ink-900 group-hover:text-brand-700">Live Human Subtitling</span>
+<span class="mt-0.5 block text-xs leading-snug text-ink-500">Re-speaking, stenotype and scripted-event subtitling.</span></a><a href="solutions-multilingual-broadcasts.html" class="group block rounded-xl px-3 py-2.5 transition-colors hover:bg-brand-50">
+<span class="block text-sm font-semibold text-ink-900 group-hover:text-brand-700">Multilingual Broadcasts</span>
+<span class="mt-0.5 block text-xs leading-snug text-ink-500">RTMP / SRT broadcasts with multiple audio tracks.</span></a></div></div></div></div></div><div class="nav-group relative" data-open="false">
+<button type="button" class="nav-trigger flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-semibold text-ink-700 transition-colors hover:text-brand-700" aria-expanded="false">
+Platforms<svg class="nav-caret h-3.5 w-3.5 transition-transform" viewBox="0 0 16 16" fill="none"><path d="m4 6 4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+<div class="nav-panel absolute left-1/2 top-full z-50 -translate-x-1/2 pt-3 w-[320px]">
+<div class="overflow-hidden rounded-2xl border border-ink-100 bg-white p-3 shadow-[0_30px_80px_-30px_rgba(11,11,18,0.35)]">
+<div class="grid gap-1 grid-cols-1"><div class="p-1"><a href="platforms-enterprise.html" class="group block rounded-xl px-3 py-2.5 transition-colors hover:bg-brand-50">
+<span class="block text-sm font-semibold text-ink-900 group-hover:text-brand-700">Enterprise Platform</span>
+<span class="mt-0.5 block text-xs leading-snug text-ink-500">Embed our multilingual player in any site or platform.</span></a><a href="platforms-webinar.html" class="group block rounded-xl px-3 py-2.5 transition-colors hover:bg-brand-50">
+<span class="block text-sm font-semibold text-ink-900 group-hover:text-brand-700">Webinar Platform</span>
+<span class="mt-0.5 block text-xs leading-snug text-ink-500">Hosted pages, registration and interactive features.</span></a><a href="platforms-learning.html" class="group block rounded-xl px-3 py-2.5 transition-colors hover:bg-brand-50">
+<span class="block text-sm font-semibold text-ink-900 group-hover:text-brand-700">Learning Platform</span>
+<span class="mt-0.5 block text-xs leading-snug text-ink-500">Multilingual courses and on-demand training.</span></a></div></div></div></div></div><div class="nav-group relative" data-open="false">
+<button type="button" class="nav-trigger flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-semibold text-ink-700 transition-colors hover:text-brand-700" aria-expanded="false">
+Demos<svg class="nav-caret h-3.5 w-3.5 transition-transform" viewBox="0 0 16 16" fill="none"><path d="m4 6 4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+<div class="nav-panel absolute left-1/2 top-full z-50 -translate-x-1/2 pt-3 w-[320px]">
+<div class="overflow-hidden rounded-2xl border border-ink-100 bg-white p-3 shadow-[0_30px_80px_-30px_rgba(11,11,18,0.35)]">
+<div class="grid gap-1 grid-cols-1"><div class="p-1"><a href="demos.html#multilingual" class="group block rounded-xl px-3 py-2.5 transition-colors hover:bg-brand-50">
+<span class="block text-sm font-semibold text-ink-900 group-hover:text-brand-700">Multilingual Live Streaming</span>
+</a><a href="demos.html#ai-speech" class="group block rounded-xl px-3 py-2.5 transition-colors hover:bg-brand-50">
+<span class="block text-sm font-semibold text-ink-900 group-hover:text-brand-700">Live AI Speech Translations &amp; Subtitles</span>
+</a><a href="demos.html#accuracy" class="group block rounded-xl px-3 py-2.5 transition-colors hover:bg-brand-50">
+<span class="block text-sm font-semibold text-ink-900 group-hover:text-brand-700">Live AI Captions Accuracy Comparison</span>
+</a><a href="demos.html#floor" class="group block rounded-xl px-3 py-2.5 transition-colors hover:bg-brand-50">
+<span class="block text-sm font-semibold text-ink-900 group-hover:text-brand-700">Live AI for Multilingual Floor</span>
+</a></div></div></div></div></div><a href="blog.html" class="rounded-lg px-3 py-2 text-sm font-semibold text-ink-700 transition-colors hover:text-brand-700">News</a><a href="pricing.html" class="rounded-lg px-3 py-2 text-sm font-semibold text-ink-700 transition-colors hover:text-brand-700">Pricing</a><div class="nav-group relative" data-open="false">
+<button type="button" class="nav-trigger flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-semibold text-ink-700 transition-colors hover:text-brand-700" aria-expanded="false">
+More<svg class="nav-caret h-3.5 w-3.5 transition-transform" viewBox="0 0 16 16" fill="none"><path d="m4 6 4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+<div class="nav-panel absolute left-1/2 top-full z-50 -translate-x-1/2 pt-3 w-[320px]">
+<div class="overflow-hidden rounded-2xl border border-ink-100 bg-white p-3 shadow-[0_30px_80px_-30px_rgba(11,11,18,0.35)]">
+<div class="grid gap-1 grid-cols-1"><div class="p-1"><a href="docs.html" class="group block rounded-xl px-3 py-2.5 transition-colors hover:bg-brand-50">
+<span class="block text-sm font-semibold text-ink-900 group-hover:text-brand-700">Documentation</span>
+</a><a href="faq.html" class="group block rounded-xl px-3 py-2.5 transition-colors hover:bg-brand-50">
+<span class="block text-sm font-semibold text-ink-900 group-hover:text-brand-700">FAQ</span>
+</a><a href="jobs.html" class="group block rounded-xl px-3 py-2.5 transition-colors hover:bg-brand-50">
+<span class="block text-sm font-semibold text-ink-900 group-hover:text-brand-700">Jobs</span>
+</a><a href="contact.html" class="group block rounded-xl px-3 py-2.5 transition-colors hover:bg-brand-50">
+<span class="block text-sm font-semibold text-ink-900 group-hover:text-brand-700">Contact</span>
+</a><a href="about.html" class="group block rounded-xl px-3 py-2.5 transition-colors hover:bg-brand-50">
+<span class="block text-sm font-semibold text-ink-900 group-hover:text-brand-700">About</span>
+</a></div></div></div></div></div></nav>
+<div class="hidden items-center gap-3 lg:flex"><a href="free-trial.html" class="inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all duration-200 px-5 py-2.5 text-sm bg-accent-500 text-white shadow-[0_10px_30px_-10px_rgba(255,90,54,0.6)] hover:bg-accent-600 hover:-translate-y-0.5">Try now<svg class="h-4 w-4" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12m0 0-5-5m5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div>
+<button type="button" data-burger data-open="false" aria-label="Open menu" aria-expanded="false" class="flex h-10 w-10 items-center justify-center rounded-lg border border-ink-200 text-ink-800 lg:hidden">
+<span class="relative block h-4 w-5">
+<span class="b1 absolute left-0 top-0 block h-0.5 w-5 bg-current transition-all"></span>
+<span class="b2 absolute left-0 top-2 block h-0.5 w-5 bg-current transition-all"></span>
+<span class="b3 absolute left-0 top-4 block h-0.5 w-5 bg-current transition-all"></span>
+</span></button>
+</div>
+<div data-mobile-menu hidden class="lg:hidden">
+<div class="max-h-[calc(100vh-4rem)] overflow-y-auto border-t border-ink-100 bg-paper px-5 pb-10 pt-4">
+<ul class="divide-y divide-ink-100"><li class="py-1" data-msub data-open="false">
+<button type="button" data-msub-toggle class="flex w-full items-center justify-between py-3 text-base font-semibold text-ink-900">
+Solutions<svg class="msub-caret h-4 w-4 transition-transform" viewBox="0 0 16 16" fill="none"><path d="m4 6 4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+<div class="msub-links pb-2"><a href="solutions-live-vod-streaming.html" class="block rounded-lg px-3 py-2.5 text-sm font-medium text-ink-600 hover:bg-brand-50 hover:text-brand-700">Live &amp; VoD Streaming</a><a href="solutions-multilingual-simulive-streaming.html" class="block rounded-lg px-3 py-2.5 text-sm font-medium text-ink-600 hover:bg-brand-50 hover:text-brand-700">Multilingual Simulive Streaming</a><a href="solutions-ai-multilingual-subtitles.html" class="block rounded-lg px-3 py-2.5 text-sm font-medium text-ink-600 hover:bg-brand-50 hover:text-brand-700">Live AI Multilingual Subtitles</a><a href="solutions-ai-speech-translations.html" class="block rounded-lg px-3 py-2.5 text-sm font-medium text-ink-600 hover:bg-brand-50 hover:text-brand-700">Live AI Speech Translations</a><a href="solutions-remote-simultaneous-interpretation.html" class="block rounded-lg px-3 py-2.5 text-sm font-medium text-ink-600 hover:bg-brand-50 hover:text-brand-700">Remote Simultaneous Interpretation</a><a href="solutions-live-human-subtitling.html" class="block rounded-lg px-3 py-2.5 text-sm font-medium text-ink-600 hover:bg-brand-50 hover:text-brand-700">Live Human Subtitling</a><a href="solutions-multilingual-broadcasts.html" class="block rounded-lg px-3 py-2.5 text-sm font-medium text-ink-600 hover:bg-brand-50 hover:text-brand-700">Multilingual Broadcasts</a></div></li><li class="py-1" data-msub data-open="false">
+<button type="button" data-msub-toggle class="flex w-full items-center justify-between py-3 text-base font-semibold text-ink-900">
+Platforms<svg class="msub-caret h-4 w-4 transition-transform" viewBox="0 0 16 16" fill="none"><path d="m4 6 4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+<div class="msub-links pb-2"><a href="platforms-enterprise.html" class="block rounded-lg px-3 py-2.5 text-sm font-medium text-ink-600 hover:bg-brand-50 hover:text-brand-700">Enterprise Platform</a><a href="platforms-webinar.html" class="block rounded-lg px-3 py-2.5 text-sm font-medium text-ink-600 hover:bg-brand-50 hover:text-brand-700">Webinar Platform</a><a href="platforms-learning.html" class="block rounded-lg px-3 py-2.5 text-sm font-medium text-ink-600 hover:bg-brand-50 hover:text-brand-700">Learning Platform</a></div></li><li class="py-1" data-msub data-open="false">
+<button type="button" data-msub-toggle class="flex w-full items-center justify-between py-3 text-base font-semibold text-ink-900">
+Demos<svg class="msub-caret h-4 w-4 transition-transform" viewBox="0 0 16 16" fill="none"><path d="m4 6 4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+<div class="msub-links pb-2"><a href="demos.html#multilingual" class="block rounded-lg px-3 py-2.5 text-sm font-medium text-ink-600 hover:bg-brand-50 hover:text-brand-700">Multilingual Live Streaming</a><a href="demos.html#ai-speech" class="block rounded-lg px-3 py-2.5 text-sm font-medium text-ink-600 hover:bg-brand-50 hover:text-brand-700">Live AI Speech Translations &amp; Subtitles</a><a href="demos.html#accuracy" class="block rounded-lg px-3 py-2.5 text-sm font-medium text-ink-600 hover:bg-brand-50 hover:text-brand-700">Live AI Captions Accuracy Comparison</a><a href="demos.html#floor" class="block rounded-lg px-3 py-2.5 text-sm font-medium text-ink-600 hover:bg-brand-50 hover:text-brand-700">Live AI for Multilingual Floor</a></div></li><li class="py-1"><a href="blog.html" class="block py-3 text-base font-semibold text-ink-900">News</a></li><li class="py-1"><a href="pricing.html" class="block py-3 text-base font-semibold text-ink-900">Pricing</a></li><li class="py-1" data-msub data-open="false">
+<button type="button" data-msub-toggle class="flex w-full items-center justify-between py-3 text-base font-semibold text-ink-900">
+More<svg class="msub-caret h-4 w-4 transition-transform" viewBox="0 0 16 16" fill="none"><path d="m4 6 4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+<div class="msub-links pb-2"><a href="docs.html" class="block rounded-lg px-3 py-2.5 text-sm font-medium text-ink-600 hover:bg-brand-50 hover:text-brand-700">Documentation</a><a href="faq.html" class="block rounded-lg px-3 py-2.5 text-sm font-medium text-ink-600 hover:bg-brand-50 hover:text-brand-700">FAQ</a><a href="jobs.html" class="block rounded-lg px-3 py-2.5 text-sm font-medium text-ink-600 hover:bg-brand-50 hover:text-brand-700">Jobs</a><a href="contact.html" class="block rounded-lg px-3 py-2.5 text-sm font-medium text-ink-600 hover:bg-brand-50 hover:text-brand-700">Contact</a><a href="about.html" class="block rounded-lg px-3 py-2.5 text-sm font-medium text-ink-600 hover:bg-brand-50 hover:text-brand-700">About</a></div></li></ul>
+<div class="mt-6 flex flex-col gap-3">
+<a href="free-trial.html" class="flex w-full items-center justify-center gap-2 rounded-full font-semibold transition-all duration-200 px-7 py-3.5 text-base bg-accent-500 text-white shadow-[0_10px_30px_-10px_rgba(255,90,54,0.6)] hover:bg-accent-600 hover:-translate-y-0.5">Try now<svg class="h-4 w-4" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12m0 0-5-5m5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+<a href="contact.html" class="flex w-full items-center justify-center gap-2 rounded-full font-semibold transition-all duration-200 px-7 py-3.5 text-base border border-ink-200 bg-white text-ink-800 hover:border-brand-300 hover:text-brand-700">Contact sales</a>
+</div></div></div>
+</header>
+<main id="main"><section class="relative overflow-hidden bg-ink-950 pb-16 pt-16 text-white md:pb-20 md:pt-24">
+<div class="bg-grid absolute inset-0 opacity-[0.12]"></div>
+<div class="absolute -left-40 -top-20 h-[26rem] w-[26rem] rounded-full bg-brand-600/25 blur-[120px]"></div>
+<div class="absolute right-0 top-10 h-[20rem] w-[20rem] rounded-full bg-accent-500/15 blur-[120px]"></div>
+<div class="container-x relative"><div class="max-w-3xl reveal in-view">
+<span class="text-xs font-semibold uppercase tracking-[0.18em] text-brand-300">How-to · 19 June 2024</span>
+<h1 class="mt-4 text-balance font-display text-4xl font-bold leading-[1.06] sm:text-5xl md:text-[3.25rem]">Getting started with AI for simultaneous interpretation</h1>
+<p class="mt-5 text-lg leading-relaxed text-white/70">SabioCast lets you deliver live streams with multiple audio languages and closed captions using AI, human interpreters, or a combination of both.</p>
+
+</div></div></section>
+<section  class="py-20 md:py-28 bg-paper text-ink-900"><div class="container-x"><article class="mx-auto max-w-2xl"><p class="mt-5 text-[1.05rem] leading-relaxed text-ink-700 first:mt-0">SabioCast lets you deliver live streams with multiple audio languages and closed captions. You can use AI, human interpreters and subtitlers, or a combination of both.</p><p class="mt-5 text-[1.05rem] leading-relaxed text-ink-700 first:mt-0">Live AI speech translation recognises the words spoken in your stream and generates natural-sounding AI voices in real time. With optional real-time correction you can reach near-perfect accuracy while keeping costs and logistics far below a full interpreter team.</p><p class="mt-5 text-[1.05rem] leading-relaxed text-ink-700 first:mt-0">This post walks through configuring your first AI-translated event, from choosing languages to embedding the multilingual player.</p>
+<div class="mt-10 border-t border-ink-100 pt-6"><a href="blog.html" class="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-600"><span class="rotate-180"><svg class="h-4 w-4" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12m0 0-5-5m5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span> All news</a></div></article></div></section>
+<section  class="py-20 md:py-28 bg-ink-50 text-ink-900"><div class="container-x"><h2 class="text-2xl font-bold text-ink-900">More from the blog</h2>
+<div class="mt-8 grid gap-5 md:grid-cols-3"><a href="blog-vote-sabiocast-streaming-media-innovation-awards.html" class="group rounded-2xl border border-ink-100 bg-white p-6 transition-all hover:-translate-y-1 hover:border-brand-200"><p class="text-xs font-semibold uppercase tracking-[0.14em] text-ink-400">Company</p><h3 class="mt-2 text-base font-bold text-ink-900 group-hover:text-brand-700">Vote for SabioCast in the 2026 Streaming Media Innovation Awards!</h3></a><a href="blog-secure-reliable-transport-key-advantages.html" class="group rounded-2xl border border-ink-100 bg-white p-6 transition-all hover:-translate-y-1 hover:border-brand-200"><p class="text-xs font-semibold uppercase tracking-[0.14em] text-ink-400">Technology</p><h3 class="mt-2 text-base font-bold text-ink-900 group-hover:text-brand-700">Secure Reliable Transport (SRT): key advantages</h3></a><a href="blog-live-ai-transcription-for-event-attendees.html" class="group rounded-2xl border border-ink-100 bg-white p-6 transition-all hover:-translate-y-1 hover:border-brand-200"><p class="text-xs font-semibold uppercase tracking-[0.14em] text-ink-400">Product</p><h3 class="mt-2 text-base font-bold text-ink-900 group-hover:text-brand-700">Live AI transcription and translation for event attendees</h3></a></div></div></section>
+<section class="bg-paper py-20 md:py-24"><div class="container-x">
+<div class="relative overflow-hidden rounded-3xl bg-brand-700 px-6 py-14 text-center md:px-16 md:py-20">
+<div class="bg-grid absolute inset-0 opacity-30"></div>
+<div class="absolute -right-16 -top-16 h-64 w-64 rounded-full bg-accent-500/30 blur-3xl"></div>
+<div class="absolute -bottom-20 -left-10 h-64 w-64 rounded-full bg-brand-400/30 blur-3xl"></div>
+<div class="relative">
+<h2 class="text-balance text-3xl font-bold text-white sm:text-4xl md:text-5xl">Get started now</h2>
+<p class="mx-auto mt-4 max-w-xl text-lg text-white/70">Start live streaming today with a solution of choice. No credit card required.</p>
+<div class="mt-8 flex flex-wrap justify-center gap-3"><a href="free-trial.html" class="inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all duration-200 px-7 py-3.5 text-base bg-accent-500 text-white shadow-[0_10px_30px_-10px_rgba(255,90,54,0.6)] hover:bg-accent-600 hover:-translate-y-0.5">Try for free<svg class="h-4 w-4" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12m0 0-5-5m5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a><a href="contact.html" class="inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all duration-200 px-7 py-3.5 text-base bg-white text-ink-900 hover:bg-ink-100 hover:-translate-y-0.5">Contact us for more info</a></div>
+</div></div></div></section></main>
+<footer class="bg-ink-950 text-white">
+<div class="container-x py-16">
+<div class="grid gap-12 lg:grid-cols-[1.4fr_2.6fr]">
+<div><a href="index.html" aria-label="SabioCast home" class="shrink-0"><span class="inline-flex items-center gap-2.5"><svg viewBox="0 0 48 48" class="h-9 w-9" role="img" aria-label="SabioCast" fill="none" xmlns="http://www.w3.org/2000/svg">
+<defs><linearGradient id="sc-grad" x1="4" y1="6" x2="44" y2="42" gradientUnits="userSpaceOnUse"><stop stop-color="#5a3fe4"/><stop offset="1" stop-color="#ff5a36"/></linearGradient></defs>
+<rect x="1" y="1" width="46" height="46" rx="13" fill="url(#sc-grad)"/>
+<g stroke="#fff" stroke-width="3.4" stroke-linecap="round">
+<path d="M14.5 24.5a12 12 0 0 1 12 12" opacity="0.95"/>
+<path d="M14.5 16.5a20 20 0 0 1 20 20" opacity="0.7"/>
+<path d="M14.5 8.5a28 28 0 0 1 28 28" opacity="0.45"/></g>
+<circle cx="15" cy="36" r="4.4" fill="#fff"/></svg>
+<span class="font-display text-xl font-bold tracking-tight"><span class="text-white">Sabio</span><span class="text-accent-500">Cast</span></span></span></a>
+<p class="mt-4 max-w-xs text-sm leading-relaxed text-white/60">Multilingual live streaming to a global audience — AI captions, AI speech translation and remote interpretation in one platform.</p>
+<address class="mt-6 text-sm not-italic leading-relaxed text-white/60">Jules Bilmeyerstraat 32<br>2600 Berchem<br>Belgium</address>
+<div class="mt-6 flex gap-2">
+<a href="https://www.linkedin.com/company/sabiocast" aria-label="LinkedIn" target="_blank" rel="noreferrer" class="flex h-9 w-9 items-center justify-center rounded-lg border border-white/15 text-white/70 transition-colors hover:border-white/40 hover:text-white"><svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14zM8.34 18.34V10.4H5.67v7.94h2.67zM7 9.24a1.55 1.55 0 1 0 0-3.1 1.55 1.55 0 0 0 0 3.1zm11.34 9.1v-4.36c0-2.33-1.24-3.42-2.9-3.42a2.5 2.5 0 0 0-2.27 1.25v-1.07h-2.67c.04.75 0 7.94 0 7.94h2.67v-4.43c0-.24.02-.48.09-.65.19-.48.63-.98 1.36-.98.96 0 1.35.73 1.35 1.8v4.26h2.67z"/></svg></a>
+<a href="https://www.facebook.com/sabiocast" aria-label="Facebook" target="_blank" rel="noreferrer" class="flex h-9 w-9 items-center justify-center rounded-lg border border-white/15 text-white/70 transition-colors hover:border-white/40 hover:text-white"><svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24"><path d="M13.5 22v-8h2.7l.4-3.1h-3.1V8.9c0-.9.25-1.5 1.55-1.5H17V4.6c-.3-.04-1.3-.13-2.46-.13-2.43 0-4.1 1.49-4.1 4.22v2.36H7.7V14h2.74v8h3.06z"/></svg></a>
+<a href="https://x.com/sabiocast" aria-label="X" target="_blank" rel="noreferrer" class="flex h-9 w-9 items-center justify-center rounded-lg border border-white/15 text-white/70 transition-colors hover:border-white/40 hover:text-white"><svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18.24 2H21l-6.56 7.5L22 22h-6.03l-4.7-6.15L5.9 22H3.14l7-8L2 2h6.19l4.25 5.62L18.24 2zm-1.06 18h1.67L7.9 3.9H6.1L17.18 20z"/></svg></a>
+</div></div>
+<div class="grid grid-cols-2 gap-8 sm:grid-cols-4"><div><h3 class="text-xs font-bold uppercase tracking-[0.16em] text-white/40">Resources</h3>
+<ul class="mt-4 space-y-2.5"><li><a href="demos.html" class="text-sm text-white/70 transition-colors hover:text-white">Multilingual Live Demo</a></li><li><a href="docs.html" class="text-sm text-white/70 transition-colors hover:text-white">Documentation Center</a></li><li><a href="player.html" class="text-sm text-white/70 transition-colors hover:text-white">SabioCast Player</a></li><li><a href="docs.html#player-api" class="text-sm text-white/70 transition-colors hover:text-white">Player API</a></li><li><a href="docs.html#integrations" class="text-sm text-white/70 transition-colors hover:text-white">Integrations</a></li><li><a href="pricing.html" class="text-sm text-white/70 transition-colors hover:text-white">Pricing</a></li></ul></div><div><h3 class="text-xs font-bold uppercase tracking-[0.16em] text-white/40">Company</h3>
+<ul class="mt-4 space-y-2.5"><li><a href="about.html" class="text-sm text-white/70 transition-colors hover:text-white">About Us</a></li><li><a href="faq.html" class="text-sm text-white/70 transition-colors hover:text-white">FAQ</a></li><li><a href="blog.html" class="text-sm text-white/70 transition-colors hover:text-white">News</a></li><li><a href="premium-support.html" class="text-sm text-white/70 transition-colors hover:text-white">Premium Support</a></li><li><a href="managed-service.html" class="text-sm text-white/70 transition-colors hover:text-white">Managed Service</a></li><li><a href="legal-gdpr.html" class="text-sm text-white/70 transition-colors hover:text-white">GDPR Compliance</a></li></ul></div><div><h3 class="text-xs font-bold uppercase tracking-[0.16em] text-white/40">Contact</h3>
+<ul class="mt-4 space-y-2.5"><li><a href="contact.html" class="text-sm text-white/70 transition-colors hover:text-white">Contact us</a></li><li><a href="free-trial.html" class="text-sm text-white/70 transition-colors hover:text-white">Request a trial account</a></li><li><a href="contact.html?intent=quote" class="text-sm text-white/70 transition-colors hover:text-white">Get a quote</a></li><li><a href="pricing.html#calculator" class="text-sm text-white/70 transition-colors hover:text-white">Estimate data traffic</a></li></ul></div><div><h3 class="text-xs font-bold uppercase tracking-[0.16em] text-white/40">Legal</h3>
+<ul class="mt-4 space-y-2.5"><li><a href="legal-terms.html" class="text-sm text-white/70 transition-colors hover:text-white">Terms of Use</a></li><li><a href="legal-privacy.html" class="text-sm text-white/70 transition-colors hover:text-white">Privacy Policy</a></li><li><a href="legal-dpa.html" class="text-sm text-white/70 transition-colors hover:text-white">Data Processing Agreement</a></li></ul></div></div></div>
+<div class="mt-14 flex flex-col items-start justify-between gap-4 border-t border-white/10 pt-6 text-xs text-white/50 sm:flex-row sm:items-center">
+<p>&copy; <span data-year>2026</span> SabioCast. All rights reserved.</p>
+<div class="flex flex-wrap gap-x-5 gap-y-2"><span>English</span><span>Nederlands</span><span>Français</span><span>Español</span><span>Deutsch</span><span>Italiano</span></div>
+</div></div></footer>
+<script src="js/config.js"></script>
+<script src="js/main.js" defer></script>
+</body>
+</html>

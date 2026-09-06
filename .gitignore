@@ -1,7 +1,7 @@
 node_modules
 .env*
 !.env.example
-dist/js/config.js
+/js/config.js
 *.tsbuildinfo
 .DS_Store
 npm-debug.log*
