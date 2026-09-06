@@ -17,9 +17,37 @@ function Field({ label, hint, children }: { label: string; hint?: string; childr
 }
 
 export function TrialForm() {
-  const [sent, setSent] = useState(false);
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [error, setError] = useState("");
 
-  if (sent) {
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setStatus("sending");
+    setError("");
+    const fd = new FormData(e.currentTarget);
+    const payload = Object.fromEntries(fd.entries());
+    payload.formType = "trial";
+
+    try {
+      const res = await fetch("/api/lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (res.ok && data.ok) {
+        setStatus("sent");
+      } else {
+        setStatus("error");
+        setError(data.error || "Something went wrong. Please try again.");
+      }
+    } catch {
+      setStatus("error");
+      setError("Network error. Please try again.");
+    }
+  }
+
+  if (status === "sent") {
     return (
       <div className="rounded-2xl border border-brand-200 bg-brand-50 p-8 text-center">
         <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-brand-600 text-white">
@@ -35,38 +63,35 @@ export function TrialForm() {
   }
 
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        setSent(true);
-      }}
-      className="grid gap-5 rounded-2xl border border-ink-100 bg-white p-6 sm:p-8"
-    >
+    <form onSubmit={onSubmit} className="grid gap-5 rounded-2xl border border-ink-100 bg-white p-6 sm:p-8">
+      {/* honeypot */}
+      <input type="text" name="company_url" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden="true" />
+
       <div className="grid gap-5 sm:grid-cols-2">
         <Field label="First name">
-          <input required className={inputCls} autoComplete="given-name" />
+          <input name="firstName" required className={inputCls} autoComplete="given-name" />
         </Field>
         <Field label="Last name">
-          <input required className={inputCls} autoComplete="family-name" />
+          <input name="lastName" required className={inputCls} autoComplete="family-name" />
         </Field>
       </div>
       <Field label="Business email" hint="No gmail, yahoo or hotmail addresses">
-        <input required type="email" className={inputCls} autoComplete="email" />
+        <input name="email" required type="email" className={inputCls} autoComplete="email" />
       </Field>
       <div className="grid gap-5 sm:grid-cols-2">
         <Field label="Company or organisation">
-          <input required className={inputCls} autoComplete="organization" />
+          <input name="company" required className={inputCls} autoComplete="organization" />
         </Field>
         <Field label="Company website" hint="Use your real company website">
-          <input required type="url" placeholder="https://" className={inputCls} />
+          <input name="website" required type="url" placeholder="https://" className={inputCls} />
         </Field>
       </div>
       <div className="grid gap-5 sm:grid-cols-2">
         <Field label="Country">
-          <input required className={inputCls} autoComplete="country-name" />
+          <input name="country" required className={inputCls} autoComplete="country-name" />
         </Field>
         <Field label="Product of interest">
-          <select required defaultValue="" className={inputCls}>
+          <select name="product" required defaultValue="" className={inputCls}>
             <option value="" disabled>
               Select a product
             </option>
@@ -76,7 +101,7 @@ export function TrialForm() {
         </Field>
       </div>
       <Field label="Purpose of trial account" hint="Max 60 characters">
-        <input required maxLength={60} className={inputCls} />
+        <input name="purpose" required maxLength={60} className={inputCls} />
       </Field>
       <label className="flex items-start gap-2.5 text-xs text-ink-600">
         <input required type="checkbox" className="mt-0.5 h-4 w-4 rounded border-ink-300 accent-brand-600" />
@@ -92,11 +117,18 @@ export function TrialForm() {
           .
         </span>
       </label>
+
+      {status === "error" && (
+        <p className="rounded-lg bg-red-50 px-3 py-2 text-sm font-medium text-red-700">{error}</p>
+      )}
+
       <button
         type="submit"
-        className="inline-flex items-center justify-center gap-2 rounded-full bg-accent-500 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-accent-600"
+        disabled={status === "sending"}
+        className="inline-flex items-center justify-center gap-2 rounded-full bg-accent-500 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-accent-600 disabled:cursor-not-allowed disabled:opacity-60"
       >
-        Request trial account <ArrowIcon />
+        {status === "sending" ? "Sending…" : "Request trial account"}
+        {status !== "sending" && <ArrowIcon />}
       </button>
     </form>
   );

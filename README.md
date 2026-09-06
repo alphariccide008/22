@@ -52,8 +52,14 @@ Logo: `src/components/Logo.tsx` (inline SVG), favicon `src/app/icon.svg`.
 
 ## Notes / TODO before launch
 
-- Forms (`contact`, `free-trial`) are front-end only — wire to a backend or form
-  service (fields already match the reference site).
+- **Forms** (`/contact`, `/free-trial`) POST to `/api/lead`, which relays the
+  submission to Telegram. Set two env vars for it to work:
+  - `TELEGRAM_BOT_TOKEN`
+  - `TELEGRAM_CHAT_ID`
+  Locally they go in `.env.local` (gitignored; see `.env.example`). On Vercel add
+  them under **Project → Settings → Environment Variables** (all environments),
+  then redeploy. Without them the form returns a "not configured yet" message.
+  Includes a honeypot field and server-side email validation.
 - Client logos in `src/content/logos.ts` render as styled text — swap for real
   SVG assets once the client list is confirmed.
 - Hero/section imagery lives in `public/images/` (licensed stock, downloaded so
