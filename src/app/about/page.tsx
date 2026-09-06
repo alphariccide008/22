@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { PageHero } from "@/components/PageHero";
 import { Container, Section, SectionHeading } from "@/components/ui";
 import { LogoMarquee, StatBand, CtaSection } from "@/components/sections";
@@ -33,6 +34,23 @@ export default function AboutPage() {
         title="Reinventing multilingual live streaming"
         intro="Since 2005 we have led the way in top-notch, user-friendly streaming solutions, making high-quality captions and simultaneous interpretation accessible for live video. We have managed tens of thousands of events for clients all over the world."
       />
+
+      <div className="bg-ink-950">
+        <Container>
+          <div className="relative -mt-4 aspect-[21/9] overflow-hidden rounded-2xl border border-white/10">
+            <Image
+              src="/images/about-team.jpg"
+              alt="A multilingual broadcast in production"
+              fill
+              priority
+              sizes="(max-width: 1280px) 100vw, 1216px"
+              className="object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-ink-950/60 to-transparent" />
+          </div>
+        </Container>
+        <div className="h-16" />
+      </div>
 
       <Section>
         <Container>

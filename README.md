@@ -56,7 +56,11 @@ Logo: `src/components/Logo.tsx` (inline SVG), favicon `src/app/icon.svg`.
   service (fields already match the reference site).
 - Client logos in `src/content/logos.ts` render as styled text — swap for real
   SVG assets once the client list is confirmed.
-- Hero/solution imagery uses Unsplash URLs via `next/image` (allowed in
-  `next.config.ts`) — replace with owned assets.
+- Hero/section imagery lives in `public/images/` (licensed stock, downloaded so
+  there is no external dependency) — replace with owned brand photography.
+- **Demo videos:** the `/demos` page uses `VideoFrame`, which stays gated
+  ("Live demos require a trial account", like the reference site) until a real
+  reel exists. Set `demoVideoId` in `src/content/site.ts` to a YouTube id and the
+  frames become real click-to-play embeds (privacy-mode, lazy-loaded).
 - `docs.sabiocast.com`, `play.sabiocast.com`, `app.sabiocast.com` subdomains are
   referenced but not built here.

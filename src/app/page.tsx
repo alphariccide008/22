@@ -46,7 +46,7 @@ export default function HomePage() {
                   Try now <ArrowIcon />
                 </Button>
                 <Button href="/demos" size="lg" variant="light">
-                  See live demo
+                  View more
                 </Button>
               </div>
               <dl className="mt-12 grid max-w-[20rem] grid-cols-3 gap-4 sm:max-w-md sm:gap-6">

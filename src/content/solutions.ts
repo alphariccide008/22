@@ -26,8 +26,7 @@ export const solutions: Solution[] = [
     heroHeading: "Live Multilingual AI Subtitles",
     heroBody:
       "Add highly accurate multilingual subtitles to any live broadcast through the latest AI technology. Results are available on every device and platform, and viewers pick their language in the SabioCast player.",
-    heroImage:
-      "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1600&q=80",
+    heroImage: "/images/ai-subtitles.jpg",
     metaTitle: "Live AI Multilingual Subtitles",
     metaDescription:
       "99+% accurate AI closed captions for live streams, auto-translated into any number of languages, with optional real-time human correction.",
@@ -128,8 +127,7 @@ export const solutions: Solution[] = [
     heroHeading: "Live AI Speech Translations",
     heroBody:
       "SabioCast uses advanced AI to add real-time speech translations to worldwide live broadcasts. Our multilingual player lets audiences pick their language and hear natural-sounding AI voices instantly.",
-    heroImage:
-      "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&w=1600&q=80",
+    heroImage: "/images/ai-speech.jpg",
     metaTitle: "Live AI Speech Translations",
     metaDescription:
       "Add any number of AI audio translations to a live stream using natural AI voices, with real-time correction for near-perfect accuracy.",
@@ -208,8 +206,7 @@ export const solutions: Solution[] = [
     heroHeading: "Remote Simultaneous Interpretation",
     heroBody:
       "Add any number of audio translations to a live stream. Interpreters can be anywhere in the world — they watch the live stream and translate it in real time via their browser. The result is a multilingual live stream available globally on every device and platform.",
-    heroImage:
-      "https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&w=1600&q=80",
+    heroImage: "/images/remote-interpretation.jpg",
     metaTitle: "Remote Simultaneous Interpretation",
     metaDescription:
       "Award-winning Translate@Home RSI. Interpreters work from anywhere, with relay, handover and language-switching tools built in.",
@@ -287,8 +284,7 @@ export const solutions: Solution[] = [
     heroHeading: "Live Human Subtitling",
     heroBody:
       "Deliver closed captions in multiple languages through live human subtitling — remote human transcription combined with real-time correction for precise, timely captions on every device and platform.",
-    heroImage:
-      "https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?auto=format&fit=crop&w=1600&q=80",
+    heroImage: "/images/human-subtitling.jpg",
     metaTitle: "Live Human Subtitling",
     metaDescription:
       "The leading solution for remote subtitling — re-speaking software, stenotype keyboards and scripted events, with optional real-time correction.",
@@ -359,8 +355,7 @@ export const solutions: Solution[] = [
     heroHeading: "Multilingual Broadcasts",
     heroBody:
       "SabioCast accepts RTMP or SRT broadcasts with multiple audio tracks and channels and turns them into multilingual live streams — ideal for on-site interpreters working from interpreting booths.",
-    heroImage:
-      "https://images.unsplash.com/photo-1478737270239-2f02b77fc618?auto=format&fit=crop&w=1600&q=80",
+    heroImage: "/images/multilingual-broadcasts.jpg",
     metaTitle: "Multilingual Broadcasts",
     metaDescription:
       "Turn RTMP/SRT broadcasts with multiple audio tracks into multilingual live streams with on-site interpreters in booths.",
@@ -433,8 +428,7 @@ export const solutions: Solution[] = [
     heroHeading: "Multilingual Simulive Streaming",
     heroBody:
       "Turn pre-recorded videos into live streams with any number of audio languages and closed captions. The stream is delivered like any other live stream — your viewers have no way of telling the difference.",
-    heroImage:
-      "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=1600&q=80",
+    heroImage: "/images/simulive.jpg",
     metaTitle: "Multilingual Simulive Streaming",
     metaDescription:
       "Stream pre-recorded video as a real live event with multiple audio languages and captions, prepared in advance for the highest quality.",
@@ -497,8 +491,7 @@ export const solutions: Solution[] = [
     heroHeading: "Live & VoD Streaming",
     heroBody:
       "An all-in-one platform for live and on-demand video streaming, management, distribution, monetisation and analytics — with a customisable HTML5 player you can embed anywhere.",
-    heroImage:
-      "https://images.unsplash.com/photo-1536240478700-b869070f9279?auto=format&fit=crop&w=1600&q=80",
+    heroImage: "/images/live-vod.jpg",
     metaTitle: "Live & VoD Streaming",
     metaDescription:
       "All-in-one live and on-demand video streaming with adaptive bitrate delivery over a global CDN and an embeddable multilingual player.",

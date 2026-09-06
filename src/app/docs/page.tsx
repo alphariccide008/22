@@ -24,7 +24,7 @@ export default function DocsPage() {
       <PageHero
         eyebrow="Documentation"
         title="Documentation Center"
-        intro="Everything you need to build with SabioCast — step-by-step guides, tutorials and API references. Sign in to your account for the full, versioned documentation."
+        intro="Everything you need to build with SabioCast — step-by-step guides, tutorials and API references. Create an account for the full, versioned documentation."
       >
         <Button href="/free-trial" size="lg">Get an account <ArrowIcon /></Button>
       </PageHero>

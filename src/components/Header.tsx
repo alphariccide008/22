@@ -60,12 +60,6 @@ export function Header() {
         </nav>
 
         <div className="hidden items-center gap-3 lg:flex">
-          <Link
-            href="/contact"
-            className="text-sm font-semibold text-ink-700 transition-colors hover:text-brand-700"
-          >
-            Sign in
-          </Link>
           <Button href="/free-trial" size="md">
             Try now <ArrowIcon />
           </Button>

@@ -14,6 +14,12 @@ export const site = {
     x: "https://x.com/sabiocast",
   },
   languages: ["English", "Nederlands", "Français", "Español", "Deutsch", "Italiano"],
+  /**
+   * YouTube / Vimeo id for the public demo reel. Leave empty to keep demos
+   * gated behind a trial account (as the reference site does). Set it once a
+   * real SabioCast demo video is available.
+   */
+  demoVideoId: "",
 };
 
 export type NavLink = { label: string; href: string; description?: string };

@@ -59,7 +59,7 @@ export default async function SolutionPage({
                   Try now <ArrowIcon />
                 </Button>
                 <Button href="/demos" size="lg" variant="light">
-                  See live demo
+                  View more
                 </Button>
               </div>
             </div>
