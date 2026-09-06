@@ -1,0 +1,156 @@
+@import "tailwindcss";
+
+/*
+  SabioCast design system
+  -----------------------
+  Bold, professional palette — deep ink base, electric indigo primary,
+  vivid coral accent. Deliberately distinct from the legacy blue brand.
+*/
+
+@theme {
+  --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  /* Brand — indigo */
+  --color-brand-50: #eef0ff;
+  --color-brand-100: #e0e2ff;
+  --color-brand-200: #c6c9ff;
+  --color-brand-300: #a3a5fc;
+  --color-brand-400: #837df8;
+  --color-brand-500: #6a5cf0;
+  --color-brand-600: #5a3fe4;
+  --color-brand-700: #4b2fc9;
+  --color-brand-800: #3d29a2;
+  --color-brand-900: #342780;
+  --color-brand-950: #21174f;
+
+  /* Accent — coral */
+  --color-accent-50: #fff2ed;
+  --color-accent-100: #ffe3d6;
+  --color-accent-200: #ffc4ad;
+  --color-accent-300: #ff9d78;
+  --color-accent-400: #ff7a4d;
+  --color-accent-500: #ff5a36;
+  --color-accent-600: #ed3d15;
+  --color-accent-700: #c42d0e;
+  --color-accent-800: #9c2712;
+  --color-accent-900: #7e2413;
+
+  /* Ink / neutrals — warm charcoal */
+  --color-ink-50: #f7f7f9;
+  --color-ink-100: #ededf1;
+  --color-ink-200: #d8d8e0;
+  --color-ink-300: #b6b6c4;
+  --color-ink-400: #8d8da1;
+  --color-ink-500: #6d6d83;
+  --color-ink-600: #56566a;
+  --color-ink-700: #454556;
+  --color-ink-800: #2b2b38;
+  --color-ink-900: #17171f;
+  --color-ink-950: #0b0b12;
+
+  --color-paper: #fbfaf8;
+
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+
+  --shadow-glow: 0 0 0 1px rgba(90, 63, 228, 0.12), 0 24px 60px -20px rgba(90, 63, 228, 0.35);
+}
+
+/* --- base --- */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink-900);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--color-brand-600);
+  color: #fff;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+}
+
+/* --- utilities --- */
+.container-x {
+  width: 100%;
+  margin-inline: auto;
+  max-width: 80rem;
+  padding-inline: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .container-x {
+    padding-inline: 2rem;
+  }
+}
+
+.text-gradient {
+  background: linear-gradient(100deg, var(--color-brand-600), var(--color-accent-500));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.bg-grid {
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+/* --- animations --- */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(0.85); opacity: 0.7; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+.animate-marquee {
+  animation: marquee 38s linear infinite;
+}
+
+.reveal {
+  opacity: 0;
+}
+
+.reveal.in-view {
+  animation: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal { opacity: 1; }
+}
