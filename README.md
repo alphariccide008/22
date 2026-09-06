@@ -1,72 +1,80 @@
-# SabioCast
+# SabioCast — static site
 
-Marketing site for **SabioCast** — multilingual live streaming with AI captions,
-AI speech translation and remote simultaneous interpretation.
+Marketing site for **SabioCast** (multilingual live streaming: AI captions, AI
+speech translation, remote interpretation). Rebuild of the reference site's
+content with a new bold identity.
 
-Content is a full rebuild of the reference site (clevercast.com), rebranded as
-SabioCast with a new bold visual identity.
+**Stack:** plain HTML + [Tailwind CSS via CDN](https://cdn.tailwindcss.com) +
+vanilla JavaScript. No framework, no bundler, no build step for the browser.
+Deploy the `dist/` folder to any static host (cPanel/FTP, Netlify drop,
+GitHub Pages, S3, nginx…).
 
-## Stack
+## Use it
 
-- **Next.js 15** (App Router, TypeScript, static export-friendly)
-- **Tailwind CSS v4** (design tokens in `src/app/globals.css`)
-- **next/font** — Space Grotesk (display) + Inter (body)
-- Animations: pure CSS keyframes + a small `IntersectionObserver` scroll-reveal
-  (`src/components/Reveal.tsx`). Respects `prefers-reduced-motion`.
-
-## Develop
+The site is **generated** from content files so copy edits stay in one place.
 
 ```bash
-npm install
-npm run dev      # http://localhost:3000
-npm run build    # production build (44 static routes)
-npm start        # serve the production build
+npm run build     # regenerate dist/ from sitegen/content/*  (needs Node 20.6+, zero deps)
+npm run serve     # preview dist/ at http://localhost:4173
+npm run dev       # build + serve
 ```
 
-## Structure
+`npm install` is **not needed** — the generator uses only Node built-ins and
+runs your `.ts` content files directly via `--experimental-strip-types`.
+
+## Layout
 
 ```
-src/
-  app/                 routes (App Router)
-    solutions/[slug]   7 solution pages, content-driven
-    platforms/         enterprise · webinar · learning
-    legal/[slug]       terms · privacy · dpa · gdpr
-    blog/[slug]        10 posts
-  components/           Header (mega menu), Footer, PlayerMock, sections, ui
-  content/             all copy lives here — site nav, solutions, pricing,
-                       faq, blog, legal, logos, home
+dist/                 ← the deployable site (git-ignored; run `npm run build`)
+  index.html
+  about/index.html
+  solutions/<slug>/index.html      (7)
+  platforms/{enterprise,webinar,learning}/
+  blog/index.html + blog/<slug>/   (10 posts)
+  legal/{terms,privacy,dpa,gdpr}/
+  pricing/ contact/ faq/ jobs/ free-trial/ demos/ player/ docs/
+  adaptive-bitrate-streaming/ premium-support/ managed-service/
+  404.html  sitemap.xml  robots.txt
+  images/  icon.svg
+  js/main.js            ← all interactivity (menus, FAQ, reveal, forms, video)
+  js/config.js          ← generated: Telegram creds baked in (see below)
+
+sitegen/
+  build.mjs             ← the generator (HTML string templates)
+  serve.mjs             ← zero-dep preview server
+  assets/main.js        ← source of dist/js/main.js
+  content/*.ts          ← ALL copy: nav, solutions, pricing, faq, blog, legal…
+
+public/                 ← static assets copied into dist/ verbatim
 ```
 
-To edit copy, change the files in `src/content/` — pages read from them.
+To change wording, edit `sitegen/content/*.ts` and re-run `npm run build`.
+To change markup/design, edit `sitegen/build.mjs` (or hand-edit the `dist/*.html`
+directly — they're plain files).
 
-## Brand
+## Forms → Telegram
 
-| Token        | Value     | Use                         |
-|--------------|-----------|-----------------------------|
-| `brand-600`  | `#5a3fe4` | primary indigo              |
-| `accent-500` | `#ff5a36` | CTAs, highlights            |
-| `ink-950`    | `#0b0b12` | dark sections               |
-| `paper`      | `#fbfaf8` | page background             |
+`/contact` and `/free-trial` submit straight to the Telegram Bot API from the
+browser. Set the credentials in `.env.local` (see `.env.example`):
 
-Logo: `src/components/Logo.tsx` (inline SVG), favicon `src/app/icon.svg`.
+```
+TELEGRAM_BOT_TOKEN=...
+TELEGRAM_CHAT_ID=...
+```
 
-## Notes / TODO before launch
+`npm run build` writes them into `dist/js/config.js`.
 
-- **Forms** (`/contact`, `/free-trial`) POST to `/api/lead`, which relays the
-  submission to Telegram. Set two env vars for it to work:
-  - `TELEGRAM_BOT_TOKEN`
-  - `TELEGRAM_CHAT_ID`
-  Locally they go in `.env.local` (gitignored; see `.env.example`). On Vercel add
-  them under **Project → Settings → Environment Variables** (all environments),
-  then redeploy. Without them the form returns a "not configured yet" message.
-  Includes a honeypot field and server-side email validation.
-- Client logos in `src/content/logos.ts` render as styled text — swap for real
-  SVG assets once the client list is confirmed.
-- Hero/section imagery lives in `public/images/` (licensed stock, downloaded so
-  there is no external dependency) — replace with owned brand photography.
-- **Demo videos:** the `/demos` page uses `VideoFrame`, which stays gated
-  ("Live demos require a trial account", like the reference site) until a real
-  reel exists. Set `demoVideoId` in `src/content/site.ts` to a YouTube id and the
-  frames become real click-to-play embeds (privacy-mode, lazy-loaded).
-- `docs.sabiocast.com`, `play.sabiocast.com`, `app.sabiocast.com` subdomains are
-  referenced but not built here.
+> ⚠️ This is a static site — the bot token is **public** in the deployed JS.
+> That's fine for a lead-capture bot; rotate it in @BotFather if it leaks. For a
+> private token you'd need a host with serverless functions to relay the message.
+
+## Notes
+
+- Tailwind is loaded from `cdn.tailwindcss.com` (compiles in the browser). Fine
+  for this scale; if you want a pinned, minified stylesheet later, run the
+  Tailwind CLI against `dist/**/*.html` and swap the CDN `<script>` for a `<link>`.
+- Client logos render as styled text — swap for real SVGs when confirmed.
+- Imagery in `public/images/` is licensed stock — replace with owned photography.
+- Demo videos are gated ("trial account") like the reference site. Set
+  `demoVideoId` in `sitegen/content/site.ts` to a YouTube id to make the demo
+  frames real click-to-play embeds.
